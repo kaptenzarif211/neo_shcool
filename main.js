@@ -1,4 +1,5 @@
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x111111);
 
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -8,20 +9,30 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById("game")
+  canvas: document.getElementById("game"),
+  antialias: true
 });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-// cube test
+// LIGHT cube (confirm nampak)
 const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
 const cube = new THREE.Mesh(geometry, material);
 
 scene.add(cube);
 
-camera.position.z = 5;
+camera.position.z = 3;
 
+// resize fix
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// animate
 function animate() {
   requestAnimationFrame(animate);
 
